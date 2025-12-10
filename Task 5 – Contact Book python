@@ -1,0 +1,43 @@
+# contact_book.py
+contacts = []
+
+def add_contact():
+    name = input("Name: ").strip()
+    phone = input("Phone: ").strip()
+    email = input("Email: ").strip()
+    address = input("Address: ").strip()
+
+    if not name or not phone:
+        print("Name and phone are required.")
+        return
+
+    contacts.append({
+        "name": name,
+        "phone": phone,
+        "email": email,
+        "address": address
+    })
+    print("Contact added.")
+
+def view_contacts():
+    if not contacts:
+        print("No contacts saved.")
+        return
+    for i, c in enumerate(contacts, start=1):
+        print(f"{i}. {c['name']} - {c['phone']} - {c['email']} - {c['address']}")
+
+def search_contact():
+    key = input("Search by name or phone: ").strip().lower()
+    found = [c for c in contacts if key in c["name"].lower() or key in c["phone"]]
+    if not found:
+        print("No matching contacts.")
+    else:
+        for c in found:
+            print(f"{c['name']} - {c['phone']} - {c['email']} - {c['address']}")
+
+def update_contact():
+    view_contacts()
+    if not contacts:
+        return
+    idx = int(input("Enter contact number to update_contact():
+    key = input("Search by name or
