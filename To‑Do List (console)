@@ -1,0 +1,48 @@
+# to_do_list.py
+tasks = []
+
+def show_menu():
+    print("\n--- TO-DO LIST ---")
+    print("1. Add task")
+    print("2. View tasks")
+    print("3. Mark task done")
+    print("4. Delete task")
+    print("5. Exit")
+
+while True:
+    show_menu()
+    choice = input("Enter choice: ")
+
+    if choice == "1":
+        title = input("Enter task: ").strip()
+        if title:
+            tasks.append({"title": title, "done": False})
+            print("Task added.")
+        else:
+            print("Task cannot be empty.")
+    elif choice == "2":
+        if not tasks:
+            print("No tasks yet.")
+        else:
+            for i, t in enumerate(tasks, start=1):
+                status = "✓" if t["done"] else "✗"
+                print(f"{i}. [{status}] {t['title']}")
+    elif choice == "3":
+        idx = int(input("Task number to mark done: ") or 0)
+        if 1 <= idx <= len(tasks):
+            tasks[idx - 1]["done"] = True
+            print("Task marked as done.")
+        else:
+            print("Invalid task number.")
+    elif choice == "4":
+        idx = int(input("Task number to delete: ") or 0)
+        if 1 <= idx <= len(tasks):
+            tasks.pop(idx - 1)
+            print("Task deleted.")
+        else:
+            print("Invalid task number.")
+    elif choice == "5":
+        print("Goodbye.")
+        break
+    else:
+        print("Invalid choice.")
