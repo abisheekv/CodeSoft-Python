@@ -1,7 +1,10 @@
 # contact_book.py
-contacts = []
+
+contacts = []  # each contact will be a dict
+
 
 def add_contact():
+    print("\n--- Add Contact ---")
     name = input("Name: ").strip()
     phone = input("Phone: ").strip()
     email = input("Email: ").strip()
@@ -11,33 +14,128 @@ def add_contact():
         print("Name and phone are required.")
         return
 
+    # check duplicate by name + phone
+    for c in contacts:
+        if c["name"].lower() == name.lower() and c["phone"] == phone:
+            print("Contact already exists.")
+            return
+
     contacts.append({
         "name": name,
         "phone": phone,
         "email": email,
         "address": address
     })
-    print("Contact added.")
+    print("Contact added successfully.")
+
 
 def view_contacts():
+    print("\n--- Contact List ---")
     if not contacts:
         print("No contacts saved.")
         return
     for i, c in enumerate(contacts, start=1):
-        print(f"{i}. {c['name']} - {c['phone']} - {c['email']} - {c['address']}")
+        print(f"{i}. {c['name']} | {c['phone']} | {c['email']} | {c['address']}")
+
 
 def search_contact():
-    key = input("Search by name or phone: ").strip().lower()
-    found = [c for c in contacts if key in c["name"].lower() or key in c["phone"]]
-    if not found:
-        print("No matching contacts.")
-    else:
-        for c in found:
-            print(f"{c['name']} - {c['phone']} - {c['email']} - {c['address']}")
+    print("\n--- Search Contact ---")
+    key = input("Enter name or phone to search: ").strip().lower()
+    results = [
+        c for c in contacts
+        if key in c["name"].lower() or key in c["phone"]
+    ]
+
+    if not results:
+        print("No matching contacts found.")
+        return
+
+    for c in results:
+        print(f"{c['name']} | {c['phone']} | {c['email']} | {c['address']}")
+
 
 def update_contact():
     view_contacts()
     if not contacts:
         return
-    idx = int(input("Enter contact number to update_contact():
-    key = input("Search by name or
+
+    try:
+        idx = int(input("Enter contact number to update: "))
+    except ValueError:
+        print("Invalid number.")
+        return
+
+    if not (1 <= idx <= len(contacts)):
+        print("Invalid contact number.")
+        return
+
+    c = contacts[idx - 1]
+    print("\nLeave field blank to keep existing value.")
+
+    new_name = input(f"Name ({c['name']}): ").strip()
+    new_phone = input(f"Phone ({c['phone']}): ").strip()
+    new_email = input(f"Email ({c['email']}): ").strip()
+    new_address = input(f"Address ({c['address']}): ").strip()
+
+    if new_name:
+        c["name"] = new_name
+    if new_phone:
+        c["phone"] = new_phone
+    if new_email:
+        c["email"] = new_email
+    if new_address:
+        c["address"] = new_address
+
+    print("Contact updated.")
+
+
+def delete_contact():
+    view_contacts()
+    if not contacts:
+        return
+
+    try:
+        idx = int(input("Enter contact number to delete: "))
+    except ValueError:
+        print("Invalid number.")
+        return
+
+    if 1 <= idx <= len(contacts):
+        removed = contacts.pop(idx - 1)
+        print(f"Deleted contact: {removed['name']}")
+    else:
+        print("Invalid contact number.")
+
+
+def main():
+    while True:
+        print("\n===== CONTACT BOOK =====")
+        print("1. Add Contact")
+        print("2. View Contact List")
+        print("3. Search Contact")
+        print("4. Update Contact")
+        print("5. Delete Contact")
+        print("6. Exit")
+
+        choice = input("Enter your choice: ").strip()
+
+        if choice == "1":
+            add_contact()
+        elif choice == "2":
+            view_contacts()
+        elif choice == "3":
+            search_contact()
+        elif choice == "4":
+            update_contact()
+        elif choice == "5":
+            delete_contact()
+        elif choice == "6":
+            print("Goodbye.")
+            break
+        else:
+            print("Invalid choice, try again.")
+
+
+if __name__ == "__main__":
+    main()
+
